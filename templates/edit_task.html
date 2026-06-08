@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Edit Tugas – EduTask{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <a href="{{ url_for('tasks') }}" class="back-link">← Kembali ke Tugas</a>
+        <h1>Edit Tugas</h1>
+    </div>
+</div>
+
+<div class="form-card">
+    <form method="POST" action="{{ url_for('edit_task', task_id=task.id) }}">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Judul Tugas <span class="required">*</span></label>
+                <input type="text" name="title" value="{{ task.title }}" required>
+            </div>
+            <div class="form-group">
+                <label>Mata Pelajaran</label>
+                <input type="text" name="subject" value="{{ task.subject or '' }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Deskripsi</label>
+            <textarea name="description" rows="3">{{ task.description or '' }}</textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Deadline</label>
+                <input type="date" name="due_date" value="{{ task.due_date or '' }}">
+            </div>
+            <div class="form-group">
+                <label>Prioritas</label>
+                <select name="priority">
+                    <option value="low" {% if task.priority=='low' %}selected{% endif %}>Rendah</option>
+                    <option value="medium" {% if task.priority=='medium' %}selected{% endif %}>Sedang</option>
+                    <option value="high" {% if task.priority=='high' %}selected{% endif %}>Tinggi</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status">
+                    <option value="pending" {% if task.status=='pending' %}selected{% endif %}>Pending</option>
+                    <option value="in_progress" {% if task.status=='in_progress' %}selected{% endif %}>Dikerjakan</option>
+                    <option value="done" {% if task.status=='done' %}selected{% endif %}>Selesai</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <a href="{{ url_for('tasks') }}" class="btn btn-ghost">Batal</a>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

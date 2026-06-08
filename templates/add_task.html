@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Tambah Tugas – EduTask{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <a href="{{ url_for('tasks') }}" class="back-link">← Kembali ke Tugas</a>
+        <h1>Tambah Tugas Baru</h1>
+    </div>
+</div>
+
+<div class="form-card">
+    <form method="POST" action="{{ url_for('add_task') }}">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Judul Tugas <span class="required">*</span></label>
+                <input type="text" name="title" placeholder="Contoh: Mengerjakan soal matematika bab 3" required>
+            </div>
+            <div class="form-group">
+                <label>Mata Pelajaran</label>
+                <input type="text" name="subject" placeholder="Contoh: Matematika, Fisika, Bahasa Inggris">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Deskripsi</label>
+            <textarea name="description" rows="3" placeholder="Deskripsi atau catatan tambahan tentang tugas ini..."></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Deadline</label>
+                <input type="date" name="due_date">
+            </div>
+            <div class="form-group">
+                <label>Prioritas</label>
+                <select name="priority">
+                    <option value="low">Rendah</option>
+                    <option value="medium" selected>Sedang</option>
+                    <option value="high">Tinggi</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <a href="{{ url_for('tasks') }}" class="btn btn-ghost">Batal</a>
+            <button type="submit" class="btn btn-primary">Simpan Tugas</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

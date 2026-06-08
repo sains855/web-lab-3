@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Profil – EduTask{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Profil Saya</h1>
+        <p class="text-muted">Kelola informasi akunmu.</p>
+    </div>
+</div>
+
+{% if success %}
+<div class="alert alert-success">{{ success }}</div>
+{% endif %}
+
+<div class="profile-layout">
+    <div class="profile-sidebar">
+        <div class="profile-avatar-lg">{{ user.username[0].upper() }}</div>
+        <div class="profile-name">{{ user.username }}</div>
+        <div class="profile-role">{{ user.role }}</div>
+        <div class="profile-bio-display">
+            {# VULN-4: Stored XSS – bio rendered without escaping #}
+            {{ user.bio|safe }}
+        </div>
+    </div>
+
+    <div class="card profile-form-card">
+        <h3>Edit Profil</h3>
+        <form method="POST" action="{{ url_for('profile') }}">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" value="{{ user.username }}" disabled class="input-disabled">
+            </div>
+            <div class="form-group">
+                <label>Bio / Tentang Saya</label>
+                <textarea name="bio" rows="4" placeholder="Tulis sedikit tentang dirimu...">{{ user.bio or '' }}</textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Simpan Profil</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Catatan – EduTask{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Catatan</h1>
+        <p class="text-muted">Simpan ringkasan atau catatan pelajaranmu.</p>
+    </div>
+    <a href="{{ url_for('add_note') }}" class="btn btn-primary">+ Catatan Baru</a>
+</div>
+
+{% if notes %}
+<div class="notes-grid">
+    {% for note in notes %}
+    <div class="note-card">
+        <div class="note-card-header">
+            <h3>{{ note.title }}</h3>
+            <span class="note-date">{{ note.created_at[:10] }}</span>
+        </div>
+        <p class="note-preview">{{ (note.content or '')[:120] }}{% if note.content and note.content|length > 120 %}…{% endif %}</p>
+        <div class="note-card-actions">
+            <a href="{{ url_for('view_note', note_id=note.id) }}" class="btn btn-sm btn-ghost">Baca</a>
+            <a href="{{ url_for('delete_note', note_id=note.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Hapus catatan ini?')">Hapus</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card empty-card">
+    <div class="empty-state-lg">
+        <div style="font-size:3rem">📝</div>
+        <h3>Belum ada catatan</h3>
+        <p>Buat catatan pertamamu untuk menyimpan ringkasan pelajaran.</p>
+        <a href="{{ url_for('add_note') }}" class="btn btn-primary">+ Buat Catatan</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

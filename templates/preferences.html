@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Preferensi – EduTask{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Preferensi</h1>
+        <p class="text-muted">Atur tampilan dan notifikasi aplikasi.</p>
+    </div>
+</div>
+
+<div class="form-card">
+    <form method="POST" action="{{ url_for('preferences') }}">
+        <div class="form-group">
+            <label>Tema Tampilan</label>
+            <select name="theme">
+                <option value="light" {% if prefs.theme=='light' %}selected{% endif %}>Terang</option>
+                <option value="dark" {% if prefs.theme=='dark' %}selected{% endif %}>Gelap</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Bahasa</label>
+            <select name="lang">
+                <option value="id" {% if prefs.lang=='id' %}selected{% endif %}>Bahasa Indonesia</option>
+                <option value="en" {% if prefs.lang=='en' %}selected{% endif %}>English</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="notif" {% if prefs.notif %}checked{% endif %}>
+                Aktifkan notifikasi pengingat tugas
+            </label>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Simpan Preferensi</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

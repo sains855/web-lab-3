@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Dashboard – EduTask{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Halo, {{ session.username }} 👋</h1>
+        <p class="text-muted">Ini ringkasan aktivitas belajarmu hari ini.</p>
+    </div>
+    <a href="{{ url_for('add_task') }}" class="btn btn-primary">+ Tambah Tugas</a>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon" style="background:#ede9fe;color:#7c3aed">📋</div>
+        <div>
+            <div class="stat-number">{{ total_tasks }}</div>
+            <div class="stat-label">Total Tugas</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:#dcfce7;color:#16a34a">✅</div>
+        <div>
+            <div class="stat-number">{{ done_tasks }}</div>
+            <div class="stat-label">Selesai</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:#fef9c3;color:#ca8a04">⏳</div>
+        <div>
+            <div class="stat-number">{{ total_tasks - done_tasks }}</div>
+            <div class="stat-label">Belum Selesai</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:#fee2e2;color:#dc2626">📝</div>
+        <div>
+            <div class="stat-number">{{ notes|length }}</div>
+            <div class="stat-label">Catatan Terbaru</div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="card">
+        <div class="card-header">
+            <h3>Tugas Terbaru</h3>
+            <a href="{{ url_for('tasks') }}" class="link-muted">Lihat semua →</a>
+        </div>
+        {% if tasks %}
+        <div class="task-list">
+            {% for task in tasks %}
+            <div class="task-item">
+                <div class="task-info">
+                    <span class="task-title">{{ task.title }}</span>
+                    <span class="task-meta">{{ task.subject or 'Umum' }} · {{ task.due_date or 'Tanpa deadline' }}</span>
+                </div>
+                <span class="badge badge-{{ task.status }}">{{ task.status }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>Belum ada tugas. <a href="{{ url_for('add_task') }}">Tambah sekarang</a></p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Catatan Terbaru</h3>
+            <a href="{{ url_for('notes') }}" class="link-muted">Lihat semua →</a>
+        </div>
+        {% if notes %}
+        <div class="note-list">
+            {% for note in notes %}
+            <a href="{{ url_for('view_note', note_id=note.id) }}" class="note-item">
+                <span class="note-title">{{ note.title }}</span>
+                <span class="note-date">{{ note.created_at[:10] }}</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>Belum ada catatan. <a href="{{ url_for('add_note') }}">Buat catatan</a></p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

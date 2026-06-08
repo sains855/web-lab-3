@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}EduTask – Kelola Tugas Belajarmu{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block content %}
+<div class="auth-container landing">
+    <div class="landing-hero">
+        <div class="landing-badge">✦ Platform Manajemen Belajar</div>
+        <h1>Atur tugas & catatanmu<br><span class="gradient-text">lebih cerdas</span></h1>
+        <p class="landing-desc">EduTask membantu pelajar dan mahasiswa mengelola tugas, deadline, dan catatan dalam satu tempat yang rapi.</p>
+        <div class="landing-cta">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Mulai Gratis</a>
+            <a href="{{ url_for('login') }}" class="btn btn-ghost btn-lg">Masuk</a>
+        </div>
+    </div>
+    <div class="landing-features">
+        <div class="feature-card">
+            <div class="feature-icon">📋</div>
+            <h3>Manajemen Tugas</h3>
+            <p>Tambah, edit, dan lacak progres tugas berdasarkan mata pelajaran & prioritas.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📝</div>
+            <h3>Catatan Digital</h3>
+            <p>Simpan catatan pelajaran dengan cepat dan mudah diakses kapan saja.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Pantau Progress</h3>
+            <p>Dashboard ringkas yang menampilkan statistik tugas selesai dan yang tertunda.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
