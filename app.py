@@ -24,14 +24,14 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_secret_key")
 # Kalau tidak ada, fallback ke variabel individual dari .env
 
 def _parse_db_config():
+    # Coba MYSQL_URL dulu (Railway reference format)
     url = os.environ.get("MYSQL_URL") or os.environ.get("DATABASE_URL", "")
-    if url.startswith("mysql://") or url.startswith("mysql+pymysql://"):
-        # Parse: mysql://user:password@host:port/dbname
+    if url and (url.startswith("mysql://") or url.startswith("mysql+pymysql://")):
         m = re.match(
             r"mysql(?:\+pymysql)?://([^:]+):([^@]*)@([^:/]+):?(\d*)/(.+)", url
         )
         if m:
-            return {
+            cfg = {
                 "host":     m.group(3),
                 "port":     int(m.group(4)) if m.group(4) else 3306,
                 "user":     m.group(1),
@@ -41,13 +41,23 @@ def _parse_db_config():
                 "cursorclass": pymysql.cursors.DictCursor,
                 "autocommit": False,
             }
-    # Fallback: variabel individual (lokal / .env)
+            print(f"[db] Konek via MYSQL_URL ke host: {cfg['host']}")
+            return cfg
+
+    # Fallback: baca variabel individual (Railway inject MYSQL_HOST dll, atau dari .env lokal)
+    host = os.environ.get("MYSQL_HOST") or os.environ.get("MYSQLHOST", "localhost")
+    port = int(os.environ.get("MYSQL_PORT") or os.environ.get("MYSQLPORT", 3306))
+    user = os.environ.get("MYSQL_USER") or os.environ.get("MYSQLUSER", "root")
+    password = os.environ.get("MYSQL_PASSWORD") or os.environ.get("MYSQLPASSWORD", "")
+    db = os.environ.get("MYSQL_DB") or os.environ.get("MYSQLDATABASE", "edutask")
+
+    print(f"[db] Konek via variabel individual ke host: {host}")
     return {
-        "host":     os.environ.get("MYSQL_HOST", "localhost"),
-        "port":     int(os.environ.get("MYSQL_PORT", 3306)),
-        "user":     os.environ.get("MYSQL_USER", "root"),
-        "password": os.environ.get("MYSQL_PASSWORD", ""),
-        "db":       os.environ.get("MYSQL_DB", "edutask"),
+        "host":     host,
+        "port":     port,
+        "user":     user,
+        "password": password,
+        "db":       db,
         "charset":  "utf8mb4",
         "cursorclass": pymysql.cursors.DictCursor,
         "autocommit": False,
