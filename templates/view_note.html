@@ -5,7 +5,7 @@
     <div>
         <a href="{{ url_for('notes') }}" class="back-link">← Kembali ke Catatan</a>
         <h1>{{ note.title }}</h1>
-        <p class="text-muted">Dibuat: {{ note.created_at[:10] }}</p>
+        <p class="text-muted">Dibuat: {{ note.created_at | dateformat }}</p>
     </div>
     <a href="{{ url_for('delete_note', note_id=note.id) }}" class="btn btn-danger" onclick="return confirm('Hapus catatan ini?')">Hapus</a>
 </div>

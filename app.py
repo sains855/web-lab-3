@@ -4,6 +4,7 @@ import pickle
 import base64
 import pymysql
 import pymysql.cursors
+from datetime import datetime as dt
 from flask import (
     Flask, render_template, request, redirect,
     url_for, session, g, make_response, jsonify
@@ -17,6 +18,17 @@ app = Flask(__name__)
 
 # [VULN-1] Secret key diambil dari .env / Railway env var
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_secret_key")
+
+# ─── Jinja2 Filter: format datetime (MySQL returns datetime object, SQLite returns string)
+@app.template_filter('dateformat')
+def dateformat(value, fmt='%Y-%m-%d'):
+    if value is None:
+        return '-'
+    if isinstance(value, str):
+        return value[:10]
+    if isinstance(value, dt):
+        return value.strftime(fmt)
+    return str(value)
 
 
 # ─── DB Config ───────────────────────────────────────────────────────────────

@@ -75,7 +75,7 @@
             {% for note in notes %}
             <a href="{{ url_for('view_note', note_id=note.id) }}" class="note-item">
                 <span class="note-title">{{ note.title }}</span>
-                <span class="note-date">{{ note.created_at[:10] }}</span>
+                <span class="note-date">{{ note.created_at | dateformat }}</span>
             </a>
             {% endfor %}
         </div>

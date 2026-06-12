@@ -15,7 +15,7 @@
     <div class="note-card">
         <div class="note-card-header">
             <h3>{{ note.title }}</h3>
-            <span class="note-date">{{ note.created_at[:10] }}</span>
+            <span class="note-date">{{ note.created_at | dateformat }}</span>
         </div>
         <p class="note-preview">{{ (note.content or '')[:120] }}{% if note.content and note.content|length > 120 %}…{% endif %}</p>
         <div class="note-card-actions">
